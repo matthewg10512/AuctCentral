@@ -1,0 +1,75 @@
+
+
+  <div class="animated fadeIn">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header ">
+            Auction Search Words <input type="text" [(ngModel)]="searchAuctionSearchWord" (ngModelChange)="onKeypressEvent($event)" />
+            
+          </div>
+          <div class="card-body" style="height:750px;overflow-y:auto">
+
+
+            <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="auctionSearchWords">
+              <thead>
+                <tr>
+                  <th width="300px">
+                    Search Word
+                  </th>
+                  <th width="200px">Actions</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let auctionSearchWord of auctionSearchWords">
+                  <td width="300px">
+                    {{auctionSearchWord.searchWord}}
+                  </td>
+                  <td width="200px">
+                    <button type="button" class="btn btn-primary">Edit</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmAuctionSearchWordDelete" (click)="ConfirmDeleteAuctionSearchWord(auctionSearchWord.id)" >Delete</button>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header ">
+          Add New Search Word
+          </div>
+          <div class="card-body" style="height:450px;">
+            <input type="text" [(ngModel)]="newAuctionSearchWord" (ngModelChange)="onKeypressEvent($event)" />
+            <br/>
+            <button type="button" class="btn btn-primary" (click)="AddNewAuctionSearchWord()">Add New</button>
+
+          </div>
+        </div>
+      </div>
+
+          </div>
+        </div>
+
+
+  <div class="modal fade" id="confirmAuctionSearchWordDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Cofirm Deletion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <button type="button" class="btn btn-danger" (click)="DeleteAuctionSearchWord()">Delete</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" #myModalClose class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

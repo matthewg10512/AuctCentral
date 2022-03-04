@@ -1,0 +1,89 @@
+
+
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header ">
+          Category Sites
+
+        </div>
+        <div class="card-body" style="height:750px;overflow-y:auto">
+
+
+          <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="auctionCategorySites">
+            <thead>
+              <tr>
+                <th width="300px">
+                  Site Name
+                </th>
+                <th width="200px">Category ID</th>
+                <th width="200px">Category Name</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let auctionCategorySite of auctionCategorySites">
+                <td width="300px">
+                  {{GetAuctionSiteName(auctionCategorySite.auctionSiteId)}}
+                </td>
+                <td width="200px">
+                  {{auctionCategorySite.siteCategoryId}}
+                </td>
+                <td width="200px">
+                  {{auctionCategorySite.siteCategoryName}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header ">
+          Category Site Search Word
+
+        </div>
+        <div class="card-body" style="height:750px;overflow-y:auto">
+
+          <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="auctionSiteCategoryWords">
+            <thead>
+              <tr>
+                <th width="300px">
+                  Category
+                </th>
+                <th width="200px">Search Word</th>
+                <th width="200px">Site</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let auctionSiteCategoryWord of auctionSiteCategoryWords">
+                <td width="300px">
+                  {{GetCategoryName(auctionSiteCategoryWord.auctionCategoryId)}}
+                </td>
+                <td width="200px">
+                  {{GetAuctionSearchWords(auctionSiteCategoryWord.auctionSearchWordId)}}
+                </td>
+                <td width="200px">
+                  {{GetSiteNameFromCategory(auctionSiteCategoryWord.auctionCategoryId)}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+
+        </div>
+      </div>
+
+
+

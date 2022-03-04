@@ -1,0 +1,184 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header ">
+          Screener Results Matt
+        </div>
+        <div class="card-body" style="height:750px;">
+
+
+          <form class="row g-2 needs-validation" standalone novalidate>
+
+
+
+
+            <div class="col-md-4" *ngIf="auctionSites">
+              <label class="form-check-label" for="auctionSites">
+                Auction Sites
+              </label>
+
+              <select class="form-control" name="auctionSites" id="auctionSites" #t [(ngModel)]="auctionItemsResourceParameters.auctionSiteId">
+                <option *ngFor="let option of auctionSites" [value]="option.id">{{option.siteName}}</option>
+              </select>
+
+            </div>
+            <div class="col-md-4" *ngIf="auctionSearchWords">
+              <label class="form-check-label" for="auctionSearchWords">
+                Auction Search Words
+              </label>
+              <select class="form-control" name="auctionSearchWords" id="auctionSearchWords" #t [(ngModel)]="auctionItemsResourceParameters.auctionSearchWordId">
+                <option *ngFor="let option of auctionSearchWords" [value]="option.id">{{option.searchWord}}</option>
+              </select>
+            </div>
+
+            <div class="col-md-2">
+              <div class="valid-feedback">Looks good!</div>
+              <label class="form-check-label" for="itemPriceMin">
+                Item Price Min
+              </label>
+
+              <input type="number" class="form-control" id="itemPriceMin"
+                     [(ngModel)]="auctionItemsResourceParameters.itemPriceMin" name="itemPriceMin">
+
+            </div>
+
+            <div class="col-md-2">
+              <div class="valid-feedback">Looks good!</div>
+              <label class="form-check-label" for="itemPriceMin">
+                Item Price Max
+              </label>
+
+              <input type="number" class="form-control" id="itemPriceMax"
+                     [(ngModel)]="auctionItemsResourceParameters.itemPriceMax" name="itemPriceMax">
+
+            </div>
+            <div class="col-md-6">
+              <label class="form-check-label" for="auctionEndMin">
+                Auction Date Min
+              </label>
+              <br />
+              <mat-form-field appearance="fill">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="auctionEndMinPicker" [(ngModel)]="auctionItemsResourceParameters.auctionEndDateRangeMin" name="auctionEndMin" id="auctionEndMin">
+                <mat-datepicker-toggle matSuffix [for]="auctionEndMinPicker"></mat-datepicker-toggle>
+                <mat-datepicker #auctionEndMinPicker></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+            <div class="col-md-6">
+              <label class="form-check-label" for="auctionEndMin">
+                Auction Date Max
+              </label>
+              <br />
+              <mat-form-field appearance="fill">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="auctionEndMaxPicker" [(ngModel)]="auctionItemsResourceParameters.auctionEndDateRangeMax" name="auctionEndMax" id="auctionEndMax">
+                <mat-datepicker-toggle matSuffix [for]="auctionEndMaxPicker"></mat-datepicker-toggle>
+                <mat-datepicker #auctionEndMaxPicker></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+
+
+
+          </form>
+
+
+
+
+
+          <button (click)="SearchAuctionItems()" class="btn btn-primary">
+            Search Auction Items
+          </button>
+          <br />
+          <br />
+          <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="auctionItems">
+            <thead>
+              <tr>
+                <th width="100px">
+                </th>
+                <th width="300px">
+                  Product Name
+
+                  <i (click)="sortByName()" [ngClass]="!sortNameDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+                </th>
+                <th width="150">Ends</th>
+                <th width="150">Site</th>
+                <th width="150">Search Name</th>
+                <th width="150px">Total Bids</th>
+                <th width="150px">
+                  Item Price
+                  <i (click)="sortByPrice()" [ngClass]="!sortPriceDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let auctionItem of auctionItems">
+                <td width="100px">
+
+                  <img src="{{auctionItem.imageUrl}}" style="width:80px;height:100px;" />
+                </td>
+                <td width="300px">
+                  <a target="_blank" href="{{auctionItem.url}}">
+                    {{ auctionItem.productName }}
+                  </a>
+                </td>
+                <td width="150px">
+                  
+                  {{ GetAuctionDate(auctionItem.auctionEndDate)}}
+                </td>
+                <td width="150px">
+                  {{ GetAuctionSiteName(auctionItem.auctionSiteId)
+                  }}
+                </td>
+                <td width="150px">
+
+                  {{ GetAuctionSearchWord(auctionItem.auctionSearchWordId)  }}
+                </td>
+                <td width="150px">
+                  {{ auctionItem.totalBids }}
+                </td>
+                <td width="150px">
+                  {{ auctionItem.itemPrice | currency }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      
+
+
+    </div>
+
+
+
+
+  </div><!--/.row-->
+
+
+</div>
+
+
+
