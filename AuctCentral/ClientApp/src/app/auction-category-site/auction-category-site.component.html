@@ -2,51 +2,18 @@
 
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-md-8">
+
+    <div class="col-md-6">
       <div class="card">
         <div class="card-header ">
-          Category Sites
+          Category Site Search Word  <button class="btn btn-primary" data-toggle="modal" data-target="#addNewCategorySite">Add</button>
 
         </div>
         <div class="card-body" style="height:750px;overflow-y:auto">
 
-
-          <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="auctionCategorySites">
-            <thead>
-              <tr>
-                <th width="300px">
-                  Site Name
-                </th>
-                <th width="200px">Category ID</th>
-                <th width="200px">Category Name</th>
-
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let auctionCategorySite of auctionCategorySites">
-                <td width="300px">
-                  {{GetAuctionSiteName(auctionCategorySite.auctionSiteId)}}
-                </td>
-                <td width="200px">
-                  {{auctionCategorySite.siteCategoryId}}
-                </td>
-                <td width="200px">
-                  {{auctionCategorySite.siteCategoryName}}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-header ">
-          Category Site Search Word
-
-        </div>
-        <div class="card-body" style="height:750px;overflow-y:auto">
+          <div *ngIf="!auctionSiteCategoryWords">
+            <widget-loading-data></widget-loading-data>
+          </div>
 
           <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="auctionSiteCategoryWords">
             <thead>
@@ -56,7 +23,7 @@
                 </th>
                 <th width="200px">Search Word</th>
                 <th width="200px">Site</th>
-
+                <th width="75px"></th>
               </tr>
             </thead>
             <tbody>
@@ -70,6 +37,9 @@
                 <td width="200px">
                   {{GetSiteNameFromCategory(auctionSiteCategoryWord.auctionCategoryId)}}
                 </td>
+                <td width="75px">
+                  <button class="btn btn-danger" data-toggle="modal" data-target="#confirmAuctionSiteCategoryWordDelete" (click)="ConfirmDeleteSiteCategoryWord(auctionSiteCategoryWord.id)">Delete</button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -82,8 +52,124 @@
       </div>
     </div>
 
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header ">
+          Category Sites
+          <input type="text" [(ngModel)]="searchCategorySite" (ngModelChange)="onKeypressEvent($event)" />
+        </div>
+        <div class="card-body" style="height:750px;overflow-y:auto">
+
+          <div *ngIf="!auctionCategorySites">
+            <widget-loading-data></widget-loading-data>
+          </div>
+          <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="auctionCategorySites">
+            <thead>
+              <tr>
+                <th width="200px">
+                  Site Name
+                </th>
+                <th width="100px">Category ID</th>
+                <th width="400px">Category Name</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let auctionCategorySite of auctionCategorySites">
+                <td width="200px">
+                  {{GetAuctionSiteName(auctionCategorySite.auctionSiteId)}}
+                </td>
+                <td width="100px">
+                  {{auctionCategorySite.siteCategoryId}}
+                </td>
+                <td width="400px">
+                  {{auctionCategorySite.siteCategoryName}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
+    </div>
 
 
 
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="addNewCategorySite" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Category Word Association</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <label class="form-check-label" for="auctionSearchWordsOptions">
+          Search Word
+        </label>
+        <select class="form-control" name="auctionSearchWordsOptions" id="auctionSearchWordsOptions" #t [(ngModel)]="auctionSiteCategoryWordNew.auctionSearchWordId">
+          <option *ngFor="let option of auctionSearchWordsOptions" [value]="option.id">{{option.searchWord}}</option>
+        </select>
+        <br />
+        <label class="form-check-label" for="auctionSitesOptions">
+          Sites
+        </label>
+
+        <select class="form-control" name="auctionSitesOptions" id="auctionSitesOptions" #auctionSitesOpt [(ngModel)]="auctionCategorySite" (ngModelChange)="SiteOptionChanged(auctionSitesOpt.value)">
+          <option *ngFor="let option of auctionSitesOptions" [value]="option.id">{{option.siteName}}</option>
+        </select>
+        <br />
+        <label class="form-check-label" for="auctionSiteCategoryOptions">
+          Site Category
+        </label>
+        <select class="form-control" name="auctionSiteCategoryOptions" id="auctionSiteCategoryOptions" #t [(ngModel)]="auctionSiteCategoryWordNew.auctionCategoryId">
+          <option *ngFor="let option of auctionCategorySitesOptionsFilter" [value]="option.id">{{option.siteCategoryName}}</option>
+        </select>
+
+        <br />
+
+        <button class="btn btn-primary" (click)="AddNewAuctionCategorySearchWord()">Add Association</button>
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" #myModalClose class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="confirmAuctionSiteCategoryWordDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-danger" (click)="DeleteAuctionSiteCategoryWord()">Delete</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" #deleteMyModalClose class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

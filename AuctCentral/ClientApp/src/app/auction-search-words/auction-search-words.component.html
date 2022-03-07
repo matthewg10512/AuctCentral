@@ -5,11 +5,14 @@
       <div class="col-md-8">
         <div class="card">
           <div class="card-header ">
-            Auction Search Words <input type="text" [(ngModel)]="searchAuctionSearchWord" (ngModelChange)="onKeypressEvent($event)" />
+            Current Search Words <input type="text" [(ngModel)]="searchAuctionSearchWord" (ngModelChange)="onKeypressEvent($event)" />
             
           </div>
           <div class="card-body" style="height:750px;overflow-y:auto">
 
+            <div *ngIf="!auctionSearchWords">
+              <widget-loading-data></widget-loading-data>
+            </div>
 
             <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="auctionSearchWords">
               <thead>
@@ -22,13 +25,18 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let auctionSearchWord of auctionSearchWords">
+                <tr *ngFor="let auctionSearchWord of auctionSearchWords;let i = index">
                   <td width="300px">
                     {{auctionSearchWord.searchWord}}
+                    <span *ngIf="editSearchWord[i]">
+                      <input type="text" *ngIf="editSearchWord[i]" [(ngModel)]="auctionSearchWord.searchWord" />
+                      <button type="button" class="btn btn-primary" (click)="SaveAuctionSearchWord(i)">Save</button>
+                      <button type="button" class="btn btn-danger" (click)="CancelAuctionSearchWordSave(i)">Cancel</button>
+                    </span>
                   </td>
                   <td width="200px">
-                    <button type="button" class="btn btn-primary">Edit</button>
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmAuctionSearchWordDelete" (click)="ConfirmDeleteAuctionSearchWord(auctionSearchWord.id)" >Delete</button>
+                    <button type="button" class="btn btn-primary" (click)="EditAuctionSearchWord(i)">Edit</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmAuctionSearchWordDelete" (click)="ConfirmDeleteAuctionSearchWord(auctionSearchWord.id)">Delete</button>
 
                   </td>
                 </tr>
@@ -59,7 +67,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Cofirm Deletion</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

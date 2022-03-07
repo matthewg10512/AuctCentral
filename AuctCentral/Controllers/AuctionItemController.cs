@@ -70,6 +70,13 @@ namespace AuctCentral.Controllers
                 searchQuery += searchQuery == "" ? "?" : "&";
                 searchQuery += "AuctionEndDateRangeMin=" + auctionItemsResourceParameters.AuctionEndDateRangeMin.Value.ToString("MM/dd/yyyy");
             }
+            if (auctionItemsResourceParameters.ProductName != null && auctionItemsResourceParameters.ProductName != "")
+            {
+                searchQuery += searchQuery == "" ? "?" : "&";
+                searchQuery += "ProductName=" + auctionItemsResourceParameters.ProductName;
+            }
+
+            
 
 
             using (var client = new HttpClient())

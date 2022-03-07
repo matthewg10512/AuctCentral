@@ -23,6 +23,10 @@ import { AuctionSearchWordsComponent } from './auction-search-words/auction-sear
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuctionCategorySiteComponent } from './auction-category-site/auction-category-site.component';
 
+import { MatTableModule } from '@angular/material/table'  
+
+import { MatPaginatorModule } from '@angular/material';
+import { LoadingDataComponent } from './widget/loading-data/loading-data.component';
 
 @NgModule({
   declarations: [
@@ -30,22 +34,26 @@ import { AuctionCategorySiteComponent } from './auction-category-site/auction-ca
     NavMenuComponent,
     HomeComponent,
     AuctionSearchWordsComponent,
-    AuctionCategorySiteComponent
+    AuctionCategorySiteComponent,
+    LoadingDataComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    MatTableModule,
+    MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
     BrowserAnimationsModule,
     MatDatepickerModule,
     MatNativeDateModule,
     NgbModule,
+    
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'auctionsearchwords', component: AuctionSearchWordsComponent },
-      { path: 'auctioncategorysite', component: AuctionCategorySiteComponent },
+      { path: 'searchwords', component: AuctionSearchWordsComponent },
+      { path: 'categorysites', component: AuctionCategorySiteComponent },
     ])
   ],
   providers: [],

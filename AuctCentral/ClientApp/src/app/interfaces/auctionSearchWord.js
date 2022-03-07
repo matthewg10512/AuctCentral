@@ -6,4 +6,4 @@ var AuctionSearchWord = /** @class */ (function () {
     return AuctionSearchWord;
 }());
 exports.AuctionSearchWord = AuctionSearchWord;
-//# sourceMappingURL=auctionSearchWord.js.map
+//# sourceMappingURL=auctionsearchword.js.map

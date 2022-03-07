@@ -1,34 +1,51 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AuctionRepoService } from '../services/auction.repo.service';
 import { AuctionItem } from '../interfaces/auctionitem';
 import { AuctionItemsResourceParameters } from '../resource-parameters/auction.items.resource';
 import { AuctionSite } from '../interfaces/auctionsite';
 import { AuctionSearchWord } from '../interfaces/auctionSearchWord';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
+  styleUrls: ['./home.css']
 })
 export class HomeComponent {
 
   constructor(private auctionRepoService: AuctionRepoService) { }
 
+  
+  //displayedColumns: string[] = ['productname', 'ends', 'site', 'searchname'];
+  displayedColumns: string[] = ['image','productname','ends','site','searchname','totalbids','price'];//, 'ends', 'site', 'searchname'];
+
+  
   auctionItemsResourceParameters: AuctionItemsResourceParameters;
-  auctionItems: AuctionItem[]; 
+  auctionItems: AuctionItem[];
+  
   auctionSites: AuctionSite[];
   auctionSearchWords: AuctionSearchWord[];
+
+
+  searchRunning: boolean = false;
 
   sortNameDesc: boolean = false;
   sortPriceDesc: boolean = false;
 
+  auctionItemsSource = new MatTableDataSource<AuctionItem>(this.auctionItems);
+
   ngOnInit() {
     this.auctionItemsResourceParameters = new AuctionItemsResourceParameters();
     this.auctionItemsResourceParameters.auctionSiteId =0;
-
+    this.auctionItemsResourceParameters.auctionEndDateRangeMin = new Date();
     this.GetAuctionSites();
     this.GetAuctionSearchWordsRecords();
   }
 
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  ngAfterViewInit() {
+    this.auctionItemsSource.paginator = this.paginator;
+  }
   GetAuctionSearchWord(auctionSearchWordId: number): string {
     let searchWord: string = '';
     let index = this.auctionSearchWords.findIndex(x => x.id === auctionSearchWordId);
@@ -40,22 +57,27 @@ export class HomeComponent {
 
   sortByName(): void {
     if (this.sortNameDesc) {
-      this.auctionItems.sort((a, b) => a.productName.localeCompare(b.productName));
+      this.auctionItemsSource.data.sort((a, b) => a.productName.localeCompare(b.productName));
 
     } else {
-      this.auctionItems.sort((a, b) => b.productName.localeCompare(a.productName));
+      this.auctionItemsSource.data.sort((a, b) => b.productName.localeCompare(a.productName));
     }
+    this.auctionItemsSource.paginator = this.paginator;
+    
     this.sortNameDesc = !this.sortNameDesc;
   }
 
   sortByPrice(): void {
+
     if (this.sortPriceDesc) {
-      this.auctionItems.sort((a, b) => a.itemPrice - b.itemPrice);
+      this.auctionItemsSource.data.sort((a, b) => a.itemPrice - b.itemPrice);
 
     } else {
-      this.auctionItems.sort((a, b) => b.itemPrice - a.itemPrice);
+      this.auctionItemsSource.data.sort((a, b) => b.itemPrice - a.itemPrice);
     }
+   
     this.sortPriceDesc = !this.sortPriceDesc;
+    this.auctionItemsSource.paginator = this.paginator;
   }
 
 
@@ -124,14 +146,17 @@ export class HomeComponent {
 
 
   SearchAuctionItems(): void{
+    this.searchRunning = true;
+    this.auctionItemsSource = new MatTableDataSource<AuctionItem>(this.auctionItems);
     this.auctionRepoService.GetAuctionItems(this.auctionItemsResourceParameters).subscribe(auctionItems => {
-      if (auctionItems && auctionItems.length > 500) {
-        alert('Please refine your search to less than 500.  There are currently ' + auctionItems.length + ' records');
-      } else {
-        this.auctionItems = auctionItems;
+      this.searchRunning = false;
+      
+      this.auctionItemsSource = new MatTableDataSource<AuctionItem>(auctionItems);
+      this.auctionItemsSource.paginator = this.paginator;
 
-      }
 
+      
+    
     });
 
   }

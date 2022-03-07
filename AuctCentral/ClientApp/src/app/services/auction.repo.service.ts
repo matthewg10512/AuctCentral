@@ -66,6 +66,12 @@ export class AuctionRepoService {
       searchQuery = searchQuery + "auctionSearchWordId=" + auctionItemsResourceParameters.auctionSearchWordId;
     }
 
+    if (auctionItemsResourceParameters.productName) {
+      searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
+      searchQuery = searchQuery + "productName=" + auctionItemsResourceParameters.productName;
+    }
+
+    
 
 
       return this.http.get<AuctionItem[]>(this.baseUrl + 'AuctionItem' + searchQuery);
@@ -81,7 +87,29 @@ export class AuctionRepoService {
     return this.http.get<AuctionSiteCategoryWord[]>(this.baseUrl + 'AuctionSiteCategoryWord');
 
   }
+
+
+
+
+  UpsertAuctionSiteCategoryWords(auctionSiteCategoryWord: AuctionSiteCategoryWord): Observable<any> {
+    const params = null; //new HttpParams().set('securityId', '' + val);
+    const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+    if (auctionSiteCategoryWord.id) {
+      auctionSiteCategoryWord.id = Number(auctionSiteCategoryWord.id);
+    }
+    auctionSiteCategoryWord.auctionCategoryId = Number(auctionSiteCategoryWord.auctionCategoryId);
+    auctionSiteCategoryWord.auctionSearchWordId = Number(auctionSiteCategoryWord.auctionSearchWordId);
+    const body = JSON.stringify(auctionSiteCategoryWord);
+   /* {
+      'auctionCategoryId': auctionSiteCategoryWord.auctionCategoryId,
+      'auctionSearchWordId': auctionSiteCategoryWord.auctionSearchWordId
+    };
+    */
+    
+    return this.http.put<any>(this.baseUrl + 'AuctionSiteCategoryWord', body, { headers, params });
+  }
   
+
 
   GetAuctionCategorySites(): Observable<AuctionCategorySite[]> {
     return this.http.get<AuctionCategorySite[]>(this.baseUrl + 'AuctionCategorySite');
@@ -99,6 +127,29 @@ export class AuctionRepoService {
     const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
     const body = { 'SearchWord': newAuctionSearchWord};
     return this.http.put<any>(this.baseUrl + 'AuctionSearchWord', body, { headers, params });
+  }
+
+
+  UpdateAuctionSearchWord(auctionSearchWord: AuctionSearchWord): Observable<any> {
+    const params = null;
+    const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+    const body = JSON.stringify(auctionSearchWord);
+    return this.http.put<any>(this.baseUrl + 'AuctionSearchWord', body, { headers, params });
+  }
+
+
+  
+
+  DeleteAuctionSiteCategoryWord(auctionSiteCategoryWordId: number): Observable<any> {
+    const params = new HttpParams().set('auctionSiteCategoryWordId', auctionSiteCategoryWordId + '');
+
+    const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+
+    return this.http.delete(this.baseUrl + 'AuctionSiteCategoryWord/' + auctionSiteCategoryWordId, { headers, params })
+      .pipe(
+        tap(_ => this.log(`deleted Auction Site Category Word`)),
+        catchError(this.handleError<any>('DeleteAuctionSiteCategoryWord'))
+      );
   }
 
   DeleteAuctionSearchWord(auctionSearchWordId: number): Observable<any> {

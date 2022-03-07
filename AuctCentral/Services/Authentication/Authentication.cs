@@ -103,7 +103,7 @@ namespace AuctCentral.Services.Authentication
             var clientPost = new RestClient(apiUrl);
             // client.Authenticator = new HttpBasicAuthenticator(username, password);
             var request = new RestRequest("signin");
-            
+
             //request.AddHeader("Content-Type", "application/json");
             var responseString = clientPost.Post(request);
             var contentString = responseString.Content; // Raw content as string

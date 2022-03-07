@@ -14,6 +14,9 @@ export class AuctionSearchWordsComponent implements OnInit {
   newAuctionSearchWord: string;
   masterAuctionSearchWords: AuctionSearchWord[];
   auctionSearchWords: AuctionSearchWord[];
+
+  editSearchWord: boolean[];
+
   @ViewChild('myModalClose', { static: false }) modalClose;
   constructor(private auctionRepoService: AuctionRepoService) { }
 
@@ -56,12 +59,42 @@ export class AuctionSearchWordsComponent implements OnInit {
     this.deleteauctionSearchWordId = auctionSearchWordId;
   }
 
+
+  SaveAuctionSearchWord(index: number): void {
+    this.auctionRepoService.UpdateAuctionSearchWord(this.auctionSearchWords[index]).subscribe(auctionSearchResult => {
+      this.GetAuctionSearchWordsRecords();;
+    });
+  }
+
+  /*
+   *Cancel the update to the Auction Search Word Edit 
+   */ 
+  CancelAuctionSearchWordSave(index: number): void {
+    this.editSearchWord[index] = false;
+    this.GetAuctionSearchWordsRecords();
+  }
+  /*
+   * Launch the Edit Mechanism 
+   */ 
+  EditAuctionSearchWord(index: number): void {
+    this.editSearchWord[index] = true;
+  }
+
   onKeypressEvent(): void {
 
     if (this.searchAuctionSearchWord == '') {
-      this.auctionSearchWords = this.masterAuctionSearchWords.filter(x=>x);
+      this.auctionSearchWords = this.masterAuctionSearchWords.filter(x => x);
+      this.editSearchWord = [];
+      for (var i = 0; i < this.auctionSearchWords.length; i++) {
+        this.editSearchWord.push(false);
+      }
+      
     } else {
-      this.auctionSearchWords = this.masterAuctionSearchWords.filter(element => element.searchWord.indexOf(this.searchAuctionSearchWord) > -1);
+      this.auctionSearchWords = this.masterAuctionSearchWords.filter(element => element.searchWord.toLowerCase().includes(this.searchAuctionSearchWord.toLowerCase()));
+      this.editSearchWord = [];
+      for (var i = 0; i < this.auctionSearchWords.length; i++) {
+        this.editSearchWord.push(false);
+      }
     }
     
     
