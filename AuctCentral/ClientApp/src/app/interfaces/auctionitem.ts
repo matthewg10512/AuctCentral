@@ -11,4 +11,5 @@ export class AuctionItem {
   dateCreated: Date;
   dateModified: Date;
   imageUrl: string;
+  auctionEndProcessed: boolean;
 }

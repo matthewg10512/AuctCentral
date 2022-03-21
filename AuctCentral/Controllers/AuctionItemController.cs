@@ -27,7 +27,49 @@ namespace AuctCentral.Controllers
             _authentication = authentication;
         }
 
-      
+
+        [HttpGet]
+        [Route("~/GetAuctionItemStatistics")]
+        public async Task<IEnumerable<AuctionStatisticDetailDto>> GetAuctionItemStatistics([FromQuery] AuctionItemsResourceParameters auctionItemsResourceParameters)
+        {
+
+            List<AuctionStatisticDetailDto> info = new List<AuctionStatisticDetailDto>();
+            _authentication.AuthenticationToken(_configuration);
+            string searchQuery = GetAuctionItemsResourcesQuery(auctionItemsResourceParameters);
+
+            using (var client = new HttpClient())
+            {
+                string apiUrl = _configuration.GetValue<string>("APIURL");
+                var url = apiUrl + "GetAuctionItemStatistics" + searchQuery;
+
+                client.DefaultRequestHeaders
+                   .Accept
+                        .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
+                _authentication.SetBearerToken(client, _configuration);
+                var response = client.GetAsync(url).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    try
+                    {
+                        var responseContent = response.Content;
+
+                        string responseString = responseContent.ReadAsStringAsync().Result;
+                        info = JsonConvert.DeserializeObject<List<AuctionStatisticDetailDto>>(responseString);
+                        Console.WriteLine(responseString);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
+                }
+            }
+
+
+            return info;
+
+        }
+        
         [HttpGet]
         public async Task<IEnumerable<AuctionItemDto>> GetAuctionItems([FromQuery] AuctionItemsResourceParameters auctionItemsResourceParameters)
         {
@@ -37,6 +79,59 @@ namespace AuctCentral.Controllers
 
             _authentication.AuthenticationToken(_configuration);
 
+            string searchQuery = GetAuctionItemsResourcesQuery(auctionItemsResourceParameters);
+           
+            
+
+
+            using (var client = new HttpClient())
+            {
+                string apiUrl = _configuration.GetValue<string>("APIURL");
+                var url = apiUrl + "AuctionItems" + searchQuery;
+
+
+
+                client.DefaultRequestHeaders
+                   .Accept
+                        .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
+                _authentication.SetBearerToken(client, _configuration);
+                var response = client.GetAsync(url).Result;
+                if (response.IsSuccessStatusCode)
+                {
+
+
+                    try
+                    {
+                        // by calling .Result you are performing a synchronous call
+                     
+                        var responseContent = response.Content;
+
+                    // by calling .Result you are synchronously reading the result
+                    
+
+
+
+                        string responseString = responseContent.ReadAsStringAsync().Result;
+                        info = JsonConvert.DeserializeObject<List<AuctionItemDto>>(responseString);
+                        Console.WriteLine(responseString);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    
+                }
+            }
+
+
+            return info;
+        }
+
+
+
+
+        private string GetAuctionItemsResourcesQuery(AuctionItemsResourceParameters auctionItemsResourceParameters)
+        {
             string searchQuery = "";
             if (auctionItemsResourceParameters.ItemPriceMax.HasValue)
             {
@@ -48,7 +143,7 @@ namespace AuctCentral.Controllers
                 searchQuery += searchQuery == "" ? "?" : "&";
                 searchQuery += "ItemPriceMin=" + auctionItemsResourceParameters.ItemPriceMin;
             }
-            if (auctionItemsResourceParameters.AuctionSiteId.HasValue && auctionItemsResourceParameters.AuctionSiteId.Value !=0)
+            if (auctionItemsResourceParameters.AuctionSiteId.HasValue && auctionItemsResourceParameters.AuctionSiteId.Value != 0)
             {
                 searchQuery += searchQuery == "" ? "?" : "&";
                 searchQuery += "AuctionSiteId=" + auctionItemsResourceParameters.AuctionSiteId;
@@ -76,48 +171,43 @@ namespace AuctCentral.Controllers
                 searchQuery += "ProductName=" + auctionItemsResourceParameters.ProductName;
             }
 
-            
 
 
-            using (var client = new HttpClient())
+            if (auctionItemsResourceParameters.TotalBidsMax.HasValue)
             {
-                string apiUrl = _configuration.GetValue<string>("APIURL");
-                var url = apiUrl + "AuctionItems" + searchQuery;
+                searchQuery += searchQuery == "" ? "?" : "&";
+                searchQuery += "TotalBidsMax=" + auctionItemsResourceParameters.TotalBidsMax;
+            }
 
+            if (auctionItemsResourceParameters.TotalBidsMin.HasValue)
+            {
+                searchQuery += searchQuery == "" ? "?" : "&";
+                searchQuery += "TotalBidsMin=" + auctionItemsResourceParameters.TotalBidsMin;
+            }
 
+            if (auctionItemsResourceParameters.AuctionEndProcessed.HasValue)
+            {
+                searchQuery += searchQuery == "" ? "?" : "&";
+                searchQuery += "auctionEndProcessed=" + auctionItemsResourceParameters.AuctionEndProcessed.ToString();
 
-                client.DefaultRequestHeaders
-                   .Accept
-                        .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
-                _authentication.SetBearerToken(client, _configuration);
-                var response = client.GetAsync(url).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    // by calling .Result you are performing a synchronous call
-                    var responseContent = response.Content;
+            }
 
-                    // by calling .Result you are synchronously reading the result
-                    string responseString = responseContent.ReadAsStringAsync().Result;
+            if (auctionItemsResourceParameters.AuctionItemId != null && auctionItemsResourceParameters.AuctionItemId.Length > 0)
+            {
+                searchQuery += searchQuery == "" ? "?" : "&";
+                searchQuery += auctionItemsResourceParameters.AuctionItemId.Length > 1 ?
+                    "AuctionItemId=" + string.Join("&AuctionItemId=",auctionItemsResourceParameters.AuctionItemId)
+                    :
+                     "AuctionItemId=" + auctionItemsResourceParameters.AuctionItemId[0]
+                    ;
 
-
-                    try
-                    {
-                        info = JsonConvert.DeserializeObject<List<AuctionItemDto>>(responseString);
-
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-                    Console.WriteLine(responseString);
-                }
             }
 
 
-            return info;
-        }
+            
 
-  
+            return searchQuery;
+        }
 
 
 

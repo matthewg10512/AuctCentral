@@ -10,5 +10,6 @@ export class AuctionItemsResourceParameters {
   productName: string;
   auctionSiteId: number;
   auctionSearchWordId: number;
-  
+  auctionEndProcessed: boolean;
+  auctionItemId: number[];
 }

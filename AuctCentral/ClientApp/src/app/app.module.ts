@@ -28,6 +28,9 @@ import { MatTableModule } from '@angular/material/table'
 import { MatPaginatorModule } from '@angular/material';
 import { LoadingDataComponent } from './widget/loading-data/loading-data.component';
 
+import { DatePipe } from '@angular/common';
+import { AuctionStatisticsComponent } from './auction-statistics/auction-statistics.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +38,8 @@ import { LoadingDataComponent } from './widget/loading-data/loading-data.compone
     HomeComponent,
     AuctionSearchWordsComponent,
     AuctionCategorySiteComponent,
-    LoadingDataComponent
+    LoadingDataComponent,
+    AuctionStatisticsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -54,9 +58,11 @@ import { LoadingDataComponent } from './widget/loading-data/loading-data.compone
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'searchwords', component: AuctionSearchWordsComponent },
       { path: 'categorysites', component: AuctionCategorySiteComponent },
+      { path: 'statistics', component: AuctionStatisticsComponent },
     ])
   ],
-  providers: [],
+  providers: [
+    DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

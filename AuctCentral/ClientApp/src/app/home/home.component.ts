@@ -131,6 +131,7 @@ export class HomeComponent {
     if (date.getFullYear() > 2022) {
       return 'Buy it Now'
     } else {
+
       var d = date,
         dformat = [d.getMonth() + 1,
         d.getDate(),

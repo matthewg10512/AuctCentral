@@ -19,7 +19,9 @@ namespace AuctCentral.ResourceParameters
 
         public int? AuctionSiteId { get; set; }
         public int? AuctionSearchWordId { get; set; }
-        
+
+        public bool? AuctionEndProcessed { get; set; }
+        public int[] AuctionItemId { get; set; }
 
     }
 }

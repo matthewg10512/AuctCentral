@@ -30,6 +30,8 @@
     <None Remove="ClientApp\src\app\interfaces\auctionSearchWord.ts" />
     <None Remove="ClientApp\src\app\interfaces\auctionsite.ts" />
     <None Remove="ClientApp\src\app\interfaces\auctionsitecategoryword.ts" />
+    <None Remove="ClientApp\src\app\interfaces\auctionstatisticdetail.ts" />
+    <None Remove="ClientApp\src\app\interfaces\itemstatdetail.ts" />
     <None Remove="ClientApp\src\app\resource-parameters\auction.items.resource.ts" />
     <None Remove="ClientApp\src\app\services\auction.repo.service.ts" />
   </ItemGroup>
@@ -40,6 +42,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\auctionsearchword.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\auctionsite.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\auctionsitecategoryword.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\auctionstatisticdetail.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\itemstatdetail.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\resource-parameters\auction.items.resource.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\auction.repo.service.ts" />
   </ItemGroup>

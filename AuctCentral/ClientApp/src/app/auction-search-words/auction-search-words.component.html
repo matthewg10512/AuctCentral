@@ -5,7 +5,7 @@
       <div class="col-md-8">
         <div class="card">
           <div class="card-header ">
-            Current Search Words <input type="text" [(ngModel)]="searchAuctionSearchWord" (ngModelChange)="onKeypressEvent($event)" />
+            Current Search Words <input type="text" [(ngModel)]="searchAuctionSearchWord" (ngModelChange)="onKeypressEvent()" />
             
           </div>
           <div class="card-body" style="height:750px;overflow-y:auto">
@@ -51,7 +51,7 @@
           Add New Search Word
           </div>
           <div class="card-body" style="height:450px;">
-            <input type="text" [(ngModel)]="newAuctionSearchWord" (ngModelChange)="onKeypressEvent($event)" />
+            <input type="text" [(ngModel)]="newAuctionSearchWord" (ngModelChange)="onKeypressEvent()" />
             <br/>
             <button type="button" class="btn btn-primary" (click)="AddNewAuctionSearchWord()">Add New</button>
 

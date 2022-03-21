@@ -45,7 +45,7 @@
             <div class="col-md-6">
               <div class="valid-feedback">Looks good!</div>
               <label class="form-check-label" for="itemPriceMin">
-                 Price Min
+                Price Min
               </label>
 
               <input type="number" class="form-control" id="itemPriceMin"
@@ -56,13 +56,36 @@
             <div class="col-md-6">
               <div class="valid-feedback">Looks good!</div>
               <label class="form-check-label" for="itemPriceMin">
-                 Price Max
+                Price Max
               </label>
-
               <input type="number" class="form-control" id="itemPriceMax"
                      [(ngModel)]="auctionItemsResourceParameters.itemPriceMax" name="itemPriceMax">
 
             </div>
+
+
+            <div class="col-md-6">
+              <div class="valid-feedback">Looks good!</div>
+              <label class="form-check-label" for="totalBidsMin">
+                Total Bids Min
+              </label>
+
+              <input type="number" class="form-control" id="totalBidsMin"
+                     [(ngModel)]="auctionItemsResourceParameters.totalBidsMin" name="totalBidsMin">
+
+            </div>
+
+            <div class="col-md-6">
+              <div class="valid-feedback">Looks good!</div>
+              <label class="form-check-label" for="totalBidsMax">
+                Total Bids Max
+              </label>
+              <input type="number" class="form-control" id="totalBidsMax"
+                     [(ngModel)]="auctionItemsResourceParameters.totalBidsMax" name="totalBidsMax">
+
+            </div>
+
+
             <div class="col-md-6">
               <label class="form-check-label" for="auctionEndMin">
                 End Date Min
@@ -89,7 +112,16 @@
               </mat-form-field>
 
             </div>
+            <div class="col-md-3">
+              <div class="form-check">
+                <br />
+                <input class="form-check-input" type="checkbox" id="auctionEndProcessed" [(ngModel)]="auctionItemsResourceParameters.auctionEndProcessed" name="auctionEndProcessed">
+                <label class="form-check-label" for="auctionEndProcessed">
+                  Auction End Processed
+                </label>
+              </div>
 
+            </div>
 
 
           </form>
@@ -112,7 +144,7 @@
                              aria-label="Select page of periodic elements">
               </mat-paginator>
               <table mat-table [dataSource]="auctionItemsSource" class="width:100%">
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
                 <ng-container matColumnDef="image">
@@ -129,7 +161,7 @@
                 </ng-container>
                 <ng-container matColumnDef="ends">
                   <th mat-header-cell *matHeaderCellDef> Ends </th>
-                  <td mat-cell *matCellDef="let element">   {{ GetAuctionDate(element.auctionEndDate)}} </td>
+                  <td mat-cell *matCellDef="let element">   {{ element.auctionEndDate | date: 'short' }} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="site">
@@ -143,7 +175,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="totalbids">
-                  <th mat-header-cell *matHeaderCellDef> Total Bids </th>
+                  <th mat-header-cell *matHeaderCellDef>Bids</th>
                   <td mat-cell *matCellDef="let element">   {{ element.totalBids }} </td>
                 </ng-container>
 

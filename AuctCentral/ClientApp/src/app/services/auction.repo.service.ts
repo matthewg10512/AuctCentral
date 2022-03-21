@@ -9,6 +9,7 @@ import { AuctionSite } from '../interfaces/auctionsite';
 import { AuctionSearchWord } from '../interfaces/auctionSearchWord';
 import { AuctionCategorySite } from '../interfaces/auctioncategorysite';
 import { AuctionSiteCategoryWord } from '../interfaces/auctionsitecategoryword';
+import { AuctionStatisticDetail } from '../interfaces/auctionstatisticdetail';
 
 
 //import { MessageService } from './message.service';
@@ -28,13 +29,17 @@ export class AuctionRepoService {
   ) { }
 
 
+  GetAuctionStatisticDetail(auctionItemsResourceParameters: AuctionItemsResourceParameters): Observable<AuctionStatisticDetail[]> {
+    let searchQuery: string = '';
+    searchQuery = this.AuctionItemsResourceParametersQuery(auctionItemsResourceParameters);
 
-  
-  GetAuctionItems(auctionItemsResourceParameters: AuctionItemsResourceParameters): Observable<AuctionItem[]> {
+    return this.http.get<AuctionStatisticDetail[]>(this.baseUrl + 'GetAuctionItemStatistics' + searchQuery);
+  }
 
+
+  AuctionItemsResourceParametersQuery(auctionItemsResourceParameters: AuctionItemsResourceParameters): string{
 
     let searchQuery: string = '';
-
     if (auctionItemsResourceParameters.itemPriceMin) {
       searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
       searchQuery = searchQuery + "itemPriceMin=" + auctionItemsResourceParameters.itemPriceMin;
@@ -71,9 +76,46 @@ export class AuctionRepoService {
       searchQuery = searchQuery + "productName=" + auctionItemsResourceParameters.productName;
     }
 
+    if (auctionItemsResourceParameters.auctionEndProcessed) {
+      searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
+      searchQuery = searchQuery + "auctionEndProcessed=" + 'true';
+    }
+
+
+    if (auctionItemsResourceParameters.totalBidsMin) {
+      searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
+      searchQuery = searchQuery + "totalBidsMin=" + auctionItemsResourceParameters.totalBidsMin;
+    }
+
+    if (auctionItemsResourceParameters.totalBidsMax) {
+      searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
+      searchQuery = searchQuery + "totalBidsMax=" + auctionItemsResourceParameters.totalBidsMax;
+    }
+
+    if (auctionItemsResourceParameters.auctionItemId) {
+      searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
+      searchQuery = searchQuery + (auctionItemsResourceParameters.auctionItemId.length > 1 ?
+        "auctionItemId=" + auctionItemsResourceParameters.auctionItemId.join("&auctionItemId=") :
+        "auctionItemId=" + auctionItemsResourceParameters.auctionItemId[0]
+          )
+        ;
+    }
     
 
 
+    return searchQuery;
+
+  }
+
+  GetAuctionItems(auctionItemsResourceParameters: AuctionItemsResourceParameters): Observable<AuctionItem[]> {
+
+
+    let searchQuery: string = '';
+
+
+    searchQuery = this.AuctionItemsResourceParametersQuery(auctionItemsResourceParameters);
+
+   
       return this.http.get<AuctionItem[]>(this.baseUrl + 'AuctionItem' + searchQuery);
   }
 
@@ -137,7 +179,7 @@ export class AuctionRepoService {
     return this.http.put<any>(this.baseUrl + 'AuctionSearchWord', body, { headers, params });
   }
 
-
+  
   
 
   DeleteAuctionSiteCategoryWord(auctionSiteCategoryWordId: number): Observable<any> {
