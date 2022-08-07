@@ -30,12 +30,12 @@ namespace AuctCentral.Controllers
 
         [HttpGet]
         [Route("~/GetAuctionItemStatistics")]
-        public async Task<IEnumerable<AuctionStatisticDetailDto>> GetAuctionItemStatistics([FromQuery] AuctionItemsResourceParameters auctionItemsResourceParameters)
+        public async Task<IEnumerable<StatisticDetailDto>> GetAuctionItemStatistics([FromQuery] ItemsResourceParameters itemsResourceParameters)
         {
 
-            List<AuctionStatisticDetailDto> info = new List<AuctionStatisticDetailDto>();
+            List<StatisticDetailDto> info = new List<StatisticDetailDto>();
             _authentication.AuthenticationToken(_configuration);
-            string searchQuery = GetAuctionItemsResourcesQuery(auctionItemsResourceParameters);
+            string searchQuery = GetAuctionItemsResourcesQuery(itemsResourceParameters);
 
             using (var client = new HttpClient())
             {
@@ -54,7 +54,7 @@ namespace AuctCentral.Controllers
                         var responseContent = response.Content;
 
                         string responseString = responseContent.ReadAsStringAsync().Result;
-                        info = JsonConvert.DeserializeObject<List<AuctionStatisticDetailDto>>(responseString);
+                        info = JsonConvert.DeserializeObject<List<StatisticDetailDto>>(responseString);
                         Console.WriteLine(responseString);
                     }
                     catch (Exception ex)
@@ -71,15 +71,15 @@ namespace AuctCentral.Controllers
         }
         
         [HttpGet]
-        public async Task<IEnumerable<AuctionItemDto>> GetAuctionItems([FromQuery] AuctionItemsResourceParameters auctionItemsResourceParameters)
+        public async Task<IEnumerable<ItemDto>> GetAuctionItems([FromQuery] ItemsResourceParameters itemsResourceParameters)
         {
-            List<AuctionItemDto> info = new List<AuctionItemDto>();
+            List<ItemDto> info = new List<ItemDto>();
 
 
 
             _authentication.AuthenticationToken(_configuration);
 
-            string searchQuery = GetAuctionItemsResourcesQuery(auctionItemsResourceParameters);
+            string searchQuery = GetAuctionItemsResourcesQuery(itemsResourceParameters);
            
             
 
@@ -112,7 +112,7 @@ namespace AuctCentral.Controllers
 
 
                         string responseString = responseContent.ReadAsStringAsync().Result;
-                        info = JsonConvert.DeserializeObject<List<AuctionItemDto>>(responseString);
+                        info = JsonConvert.DeserializeObject<List<ItemDto>>(responseString);
                         Console.WriteLine(responseString);
                     }
                     catch (Exception ex)
@@ -130,75 +130,75 @@ namespace AuctCentral.Controllers
 
 
 
-        private string GetAuctionItemsResourcesQuery(AuctionItemsResourceParameters auctionItemsResourceParameters)
+        private string GetAuctionItemsResourcesQuery(ItemsResourceParameters itemsResourceParameters)
         {
             string searchQuery = "";
-            if (auctionItemsResourceParameters.ItemPriceMax.HasValue)
+            if (itemsResourceParameters.ItemPriceMax.HasValue)
             {
                 searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += "ItemPriceMax=" + auctionItemsResourceParameters.ItemPriceMax;
+                searchQuery += "ItemPriceMax=" + itemsResourceParameters.ItemPriceMax;
             }
-            if (auctionItemsResourceParameters.ItemPriceMin.HasValue)
+            if (itemsResourceParameters.ItemPriceMin.HasValue)
             {
                 searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += "ItemPriceMin=" + auctionItemsResourceParameters.ItemPriceMin;
+                searchQuery += "ItemPriceMin=" + itemsResourceParameters.ItemPriceMin;
             }
-            if (auctionItemsResourceParameters.AuctionSiteId.HasValue && auctionItemsResourceParameters.AuctionSiteId.Value != 0)
+            if (itemsResourceParameters.SiteId.HasValue && itemsResourceParameters.SiteId.Value != 0)
             {
                 searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += "AuctionSiteId=" + auctionItemsResourceParameters.AuctionSiteId;
-            }
-
-            if (auctionItemsResourceParameters.AuctionSearchWordId.HasValue && auctionItemsResourceParameters.AuctionSearchWordId.Value != 0)
-            {
-                searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += "AuctionSearchWordId=" + auctionItemsResourceParameters.AuctionSearchWordId;
+                searchQuery += "SiteId=" + itemsResourceParameters.SiteId;
             }
 
-            if (auctionItemsResourceParameters.AuctionEndDateRangeMax.HasValue)
+            if (itemsResourceParameters.SearchWordId.HasValue && itemsResourceParameters.SearchWordId.Value != 0)
             {
                 searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += "AuctionEndDateRangeMax=" + auctionItemsResourceParameters.AuctionEndDateRangeMax.Value.ToString("MM/dd/yyyy");
-            }
-            if (auctionItemsResourceParameters.AuctionEndDateRangeMin.HasValue)
-            {
-                searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += "AuctionEndDateRangeMin=" + auctionItemsResourceParameters.AuctionEndDateRangeMin.Value.ToString("MM/dd/yyyy");
-            }
-            if (auctionItemsResourceParameters.ProductName != null && auctionItemsResourceParameters.ProductName != "")
-            {
-                searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += "ProductName=" + auctionItemsResourceParameters.ProductName;
+                searchQuery += "SearchWordId=" + itemsResourceParameters.SearchWordId;
             }
 
-
-
-            if (auctionItemsResourceParameters.TotalBidsMax.HasValue)
+            if (itemsResourceParameters.AuctionEndDateRangeMax.HasValue)
             {
                 searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += "TotalBidsMax=" + auctionItemsResourceParameters.TotalBidsMax;
+                searchQuery += "AuctionEndDateRangeMax=" + itemsResourceParameters.AuctionEndDateRangeMax.Value.ToString("MM/dd/yyyy");
+            }
+            if (itemsResourceParameters.AuctionEndDateRangeMin.HasValue)
+            {
+                searchQuery += searchQuery == "" ? "?" : "&";
+                searchQuery += "AuctionEndDateRangeMin=" + itemsResourceParameters.AuctionEndDateRangeMin.Value.ToString("MM/dd/yyyy");
+            }
+            if (itemsResourceParameters.ProductName != null && itemsResourceParameters.ProductName != "")
+            {
+                searchQuery += searchQuery == "" ? "?" : "&";
+                searchQuery += "ProductName=" + itemsResourceParameters.ProductName;
             }
 
-            if (auctionItemsResourceParameters.TotalBidsMin.HasValue)
+
+
+            if (itemsResourceParameters.TotalBidsMax.HasValue)
             {
                 searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += "TotalBidsMin=" + auctionItemsResourceParameters.TotalBidsMin;
+                searchQuery += "TotalBidsMax=" + itemsResourceParameters.TotalBidsMax;
             }
 
-            if (auctionItemsResourceParameters.AuctionEndProcessed.HasValue)
+            if (itemsResourceParameters.TotalBidsMin.HasValue)
             {
                 searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += "auctionEndProcessed=" + auctionItemsResourceParameters.AuctionEndProcessed.ToString();
+                searchQuery += "TotalBidsMin=" + itemsResourceParameters.TotalBidsMin;
+            }
+
+            if (itemsResourceParameters.AuctionEndProcessed.HasValue && itemsResourceParameters.AuctionEndProcessed.Value)
+            {
+                searchQuery += searchQuery == "" ? "?" : "&";
+                searchQuery += "auctionEndProcessed=" + itemsResourceParameters.AuctionEndProcessed.ToString();
 
             }
 
-            if (auctionItemsResourceParameters.AuctionItemId != null && auctionItemsResourceParameters.AuctionItemId.Length > 0)
+            if (itemsResourceParameters.ItemId != null && itemsResourceParameters.ItemId.Length > 0)
             {
                 searchQuery += searchQuery == "" ? "?" : "&";
-                searchQuery += auctionItemsResourceParameters.AuctionItemId.Length > 1 ?
-                    "AuctionItemId=" + string.Join("&AuctionItemId=",auctionItemsResourceParameters.AuctionItemId)
+                searchQuery += itemsResourceParameters.ItemId.Length > 1 ?
+                    "ItemId=" + string.Join("&ItemId=",itemsResourceParameters.ItemId)
                     :
-                     "AuctionItemId=" + auctionItemsResourceParameters.AuctionItemId[0]
+                     "ItemId=" + itemsResourceParameters.ItemId[0]
                     ;
 
             }

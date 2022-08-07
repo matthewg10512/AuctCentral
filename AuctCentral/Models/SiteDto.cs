@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AuctCentral.Models
 {
-    public class AuctionSiteDto
+    public class SiteDto
     {
         public int Id { get; set; }
         public string SiteName { get; set; }

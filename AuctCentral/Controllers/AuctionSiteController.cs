@@ -28,9 +28,9 @@ namespace AuctCentral.Controllers
 
 
         [HttpGet]
-        public async Task<IEnumerable<AuctionSiteDto>> GetAuctionSites()
+        public async Task<IEnumerable<SiteDto>> GetAuctionSites()
         {
-            List<AuctionSiteDto> info = new List<AuctionSiteDto>();
+            List<SiteDto> info = new List<SiteDto>();
 
 
 
@@ -62,7 +62,7 @@ namespace AuctCentral.Controllers
 
                     try
                     {
-                        info = JsonConvert.DeserializeObject<List<AuctionSiteDto>>(responseString);
+                        info = JsonConvert.DeserializeObject<List<SiteDto>>(responseString);
 
                     }
                     catch (Exception ex)

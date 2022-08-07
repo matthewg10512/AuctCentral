@@ -7,117 +7,20 @@
       <div class="card">
         <div class="card-header ">
           Auction Statistics
-         
-          
-
         </div>
         <div class="card-body" style="height:1250px;">
-
-
-          <form class="row g-2 needs-validation" standalone novalidate>
-
-
-            <div class="col-md-6">
-              <div class="valid-feedback">Looks good!</div>
-              <label class="form-check-label" for="searchAuctionSearchWord">
-                Keywords
-              </label>
-              <input type="text" class="form-control" id="searchAuctionSearchWord"
-                     [(ngModel)]="searchAuctionSearchWord" name="searchAuctionSearchWord" (ngModelChange)="onKeypressEvent()">
-
-            </div>
-
-
-            <div class="col-md-6">
-
-              <div class="form-check">
-                <br />
-                <input class="form-check-input" type="checkbox" id="topLevelSearch" [(ngModel)]="topLevelSearch" name="topLevelSearch" (change)="FilterResults()">
-                <label class="form-check-label" for="topLevelSearch">
-                  Show Parent Search Words
-                </label>
-              </div>
-
-
-
-            </div>
-
-          </form>
-
-
-          <div *ngIf="searchingSiteAuctions">
-            <widget-loading-data></widget-loading-data>
-          </div>
-
-
-
-          <div class="mat-elevation-z8" style="height:750px;overflow-y:auto">
-            <mat-paginator [pageSizeOptions]="[25, 50, 100]"
-                           showFirstLastButtons
-                           aria-label="Select page of periodic elements">
-            </mat-paginator>
-            <table mat-table [dataSource]="auctionItemsSource" class="width:100%">
-              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-
-
-              <ng-container matColumnDef="searchname">
-                <th mat-header-cell *matHeaderCellDef> Search Name </th>
-                <td mat-cell *matCellDef="let element">   {{ GetAuctionSearchWord(element.auctionSearchWordId)  }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="auctionkeywords">
-                <th mat-header-cell *matHeaderCellDef> Matching Keywords </th>
-                <td mat-cell *matCellDef="let element">   {{ element.auctionKeyWords.join(',')  }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="average">
-                <th mat-header-cell *matHeaderCellDef> Average </th>
-                <td mat-cell *matCellDef="let element">   {{ element.itemStatDetail ? element.itemStatDetail.average: 0  }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="count">
-                <th mat-header-cell *matHeaderCellDef> Count </th>
-                <td mat-cell *matCellDef="let element">   {{ element.itemStatDetail ? element.itemStatDetail.count: 0  }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="min">
-                <th mat-header-cell *matHeaderCellDef> Min </th>
-                <td mat-cell *matCellDef="let element">   {{ element.itemStatDetail ? element.itemStatDetail.min : 0  }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="max">
-                <th mat-header-cell *matHeaderCellDef> Max </th>
-                <td mat-cell *matCellDef="let element">   {{ element.itemStatDetail ?element.itemStatDetail.max : 0  }} </td>
-              </ng-container>
-
-
-
-
-
-            </table>
-
-
-          </div>
-
-
-          </div>
-
+          <app-auction-statistics-results></app-auction-statistics-results>
         </div>
-
-
-
+      </div>
 
     </div>
-
-
-
-
   </div><!--/.row-->
-
-
 </div>
+
+
+
+
+
 
 
 

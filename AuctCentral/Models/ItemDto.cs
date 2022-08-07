@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AuctCentral.Models
 {
-    public class AuctionItemDto
+    public class ItemDto
     {
 
         public int Id { get; set; }
@@ -14,8 +14,8 @@ namespace AuctCentral.Models
         public int TotalBids { get; set; }
         public DateTime? AuctionEndDate { get; set; }
         public decimal ItemPrice { get; set; }
-        public int AuctionSiteId { get; set; }
-        public int AuctionSearchWordId { get; set; }
+        public int SiteId { get; set; }
+        public int SearchWordId { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public string ImageUrl { get; set; }

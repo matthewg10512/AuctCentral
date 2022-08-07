@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace AuctCentral.Models
 {
-    public class AuctionSearchWordDto
+    public class SiteCategoryWordDto
     {
         public int Id { get; set; }
-        public string SearchWord { get; set; }
+        public int CategoryId { get; set; }
+        public int SearchWordId { get; set; }
     }
 }

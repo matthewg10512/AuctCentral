@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace AuctCentral.Models
 {
-    public class AuctionStatisticDetailDto
+    public class StatisticDetailDto
     {
 
-        public int AuctionSearchWordId { get; set; }
+        public int SearchWordId { get; set; }
         public List<string> AuctionKeyWords { get; set; }
 
         public ItemStatDetail ItemStatDetail { get; set; }
 
-        public AuctionItemsResourceParameters AuctionItemsResourceParameters { get; set; }
+        public ItemsResourceParameters ItemsResourceParameters { get; set; }
 
-        public List<int> AuctionItemIds { get; set; }
+        public List<int> ItemId { get; set; }
     }
 }

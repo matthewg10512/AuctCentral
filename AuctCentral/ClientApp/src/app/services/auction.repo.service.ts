@@ -61,14 +61,14 @@ export class AuctionRepoService {
       searchQuery = searchQuery + "auctionEndDateRangeMin=" + (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
     }
 
-    if (auctionItemsResourceParameters.auctionSiteId) {
+    if (auctionItemsResourceParameters.siteId) {
       searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
-      searchQuery = searchQuery + "auctionSiteId=" + auctionItemsResourceParameters.auctionSiteId;
+      searchQuery = searchQuery + "siteId=" + auctionItemsResourceParameters.siteId;
     }
 
-    if (auctionItemsResourceParameters.auctionSearchWordId) {
+    if (auctionItemsResourceParameters.searchWordId) {
       searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
-      searchQuery = searchQuery + "auctionSearchWordId=" + auctionItemsResourceParameters.auctionSearchWordId;
+      searchQuery = searchQuery + "SearchWordId=" + auctionItemsResourceParameters.searchWordId;
     }
 
     if (auctionItemsResourceParameters.productName) {
@@ -92,11 +92,11 @@ export class AuctionRepoService {
       searchQuery = searchQuery + "totalBidsMax=" + auctionItemsResourceParameters.totalBidsMax;
     }
 
-    if (auctionItemsResourceParameters.auctionItemId) {
+    if (auctionItemsResourceParameters.itemId) {
       searchQuery = searchQuery + (searchQuery == '' ? "?" : "&");
-      searchQuery = searchQuery + (auctionItemsResourceParameters.auctionItemId.length > 1 ?
-        "auctionItemId=" + auctionItemsResourceParameters.auctionItemId.join("&auctionItemId=") :
-        "auctionItemId=" + auctionItemsResourceParameters.auctionItemId[0]
+      searchQuery = searchQuery + (auctionItemsResourceParameters.itemId.length > 1 ?
+        "itemId=" + auctionItemsResourceParameters.itemId.join("&itemId=") :
+        "itemId=" + auctionItemsResourceParameters.itemId[0]
           )
         ;
     }
@@ -139,14 +139,10 @@ export class AuctionRepoService {
     if (auctionSiteCategoryWord.id) {
       auctionSiteCategoryWord.id = Number(auctionSiteCategoryWord.id);
     }
-    auctionSiteCategoryWord.auctionCategoryId = Number(auctionSiteCategoryWord.auctionCategoryId);
-    auctionSiteCategoryWord.auctionSearchWordId = Number(auctionSiteCategoryWord.auctionSearchWordId);
+    auctionSiteCategoryWord.categoryId = Number(auctionSiteCategoryWord.categoryId);
+    auctionSiteCategoryWord.searchWordId = Number(auctionSiteCategoryWord.searchWordId);
     const body = JSON.stringify(auctionSiteCategoryWord);
-   /* {
-      'auctionCategoryId': auctionSiteCategoryWord.auctionCategoryId,
-      'auctionSearchWordId': auctionSiteCategoryWord.auctionSearchWordId
-    };
-    */
+ 
     
     return this.http.put<any>(this.baseUrl + 'AuctionSiteCategoryWord', body, { headers, params });
   }
@@ -159,7 +155,7 @@ export class AuctionRepoService {
   }
   
 
-  GetAuctionSearchWords(): Observable<AuctionSearchWord[]> {
+  GetSearchWords(): Observable<AuctionSearchWord[]> {
     return this.http.get<AuctionSearchWord[]>(this.baseUrl + 'AuctionSearchWord');
 
   }
@@ -167,7 +163,7 @@ export class AuctionRepoService {
   AddNewAuctionSearchWord(newAuctionSearchWord: string): Observable<any> {
     const params = null;
     const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
-    const body = { 'SearchWord': newAuctionSearchWord};
+    const body = { 'Word': newAuctionSearchWord};
     return this.http.put<any>(this.baseUrl + 'AuctionSearchWord', body, { headers, params });
   }
 
@@ -194,12 +190,12 @@ export class AuctionRepoService {
       );
   }
 
-  DeleteAuctionSearchWord(auctionSearchWordId: number): Observable<any> {
-    const params = new HttpParams().set('auctionSearchWordId', auctionSearchWordId + '');
+  DeleteAuctionSearchWord(searchWordId: number): Observable<any> {
+    const params = new HttpParams().set('searchWordId', searchWordId + '');
     
     const headers = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
 
-    return this.http.delete(this.baseUrl + 'AuctionSearchWord/' + auctionSearchWordId, { headers, params })
+    return this.http.delete(this.baseUrl + 'AuctionSearchWord/' + searchWordId, { headers, params })
       .pipe(
         tap(_ => this.log(`deleted AuctionSearchWord`)),
         catchError(this.handleError<any>('DeleteAuctionSearchWord'))

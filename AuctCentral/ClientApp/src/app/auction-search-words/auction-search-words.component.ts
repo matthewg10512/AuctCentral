@@ -9,8 +9,8 @@ import { AuctionSearchWord } from '../interfaces/auctionSearchWord';
 })
 export class AuctionSearchWordsComponent implements OnInit {
 
-  deleteauctionSearchWordId: number;
-  searchAuctionSearchWord: string;
+  deleteSearchWordId: number;
+  searchSearchWord: string;
   newAuctionSearchWord: string;
   masterAuctionSearchWords: AuctionSearchWord[];
   auctionSearchWords: AuctionSearchWord[];
@@ -21,13 +21,13 @@ export class AuctionSearchWordsComponent implements OnInit {
   constructor(private auctionRepoService: AuctionRepoService) { }
 
   ngOnInit() {
-    this.searchAuctionSearchWord = '';
+    this.searchSearchWord = '';
     this.newAuctionSearchWord = '';
-    this.GetAuctionSearchWordsRecords();
+    this.GetSearchWordsRecords();
   }
 
-  GetAuctionSearchWordsRecords(): void {
-    this.auctionRepoService.GetAuctionSearchWords().subscribe(auctionSearchWords => {
+  GetSearchWordsRecords(): void {
+    this.auctionRepoService.GetSearchWords().subscribe(auctionSearchWords => {
       this.masterAuctionSearchWords = auctionSearchWords;
       this.onKeypressEvent();
     });
@@ -35,10 +35,10 @@ export class AuctionSearchWordsComponent implements OnInit {
   }
   DeleteAuctionSearchWord(): void {
 
-    this.auctionRepoService.DeleteAuctionSearchWord(this.deleteauctionSearchWordId).subscribe(auctionSearchResult => {
+    this.auctionRepoService.DeleteAuctionSearchWord(this.deleteSearchWordId).subscribe(auctionSearchResult => {
       this.modalClose.nativeElement.click();
-      this.GetAuctionSearchWordsRecords();
-      this.deleteauctionSearchWordId = 0;
+      this.GetSearchWordsRecords();
+      this.deleteSearchWordId = 0;
     });
   }
   AddNewAuctionSearchWord(): void {
@@ -49,20 +49,20 @@ export class AuctionSearchWordsComponent implements OnInit {
     else {
       this.auctionRepoService.AddNewAuctionSearchWord(this.newAuctionSearchWord).subscribe(auctionSearchResult => {
         this.newAuctionSearchWord = '';
-        this.GetAuctionSearchWordsRecords();;
+        this.GetSearchWordsRecords();;
       });
     }
   }
   ConfirmDeleteAuctionSearchWord(auctionSearchWordId: number): void {
 
     
-    this.deleteauctionSearchWordId = auctionSearchWordId;
+    this.deleteSearchWordId = auctionSearchWordId;
   }
 
 
   SaveAuctionSearchWord(index: number): void {
     this.auctionRepoService.UpdateAuctionSearchWord(this.auctionSearchWords[index]).subscribe(auctionSearchResult => {
-      this.GetAuctionSearchWordsRecords();;
+      this.GetSearchWordsRecords();;
     });
   }
 
@@ -71,7 +71,7 @@ export class AuctionSearchWordsComponent implements OnInit {
    */ 
   CancelAuctionSearchWordSave(index: number): void {
     this.editSearchWord[index] = false;
-    this.GetAuctionSearchWordsRecords();
+    this.GetSearchWordsRecords();
   }
   /*
    * Launch the Edit Mechanism 
@@ -82,7 +82,7 @@ export class AuctionSearchWordsComponent implements OnInit {
 
   onKeypressEvent(): void {
 
-    if (this.searchAuctionSearchWord == '') {
+    if (this.searchSearchWord == '') {
       this.auctionSearchWords = this.masterAuctionSearchWords.filter(x => x);
       this.editSearchWord = [];
       for (var i = 0; i < this.auctionSearchWords.length; i++) {
@@ -90,7 +90,7 @@ export class AuctionSearchWordsComponent implements OnInit {
       }
       
     } else {
-      this.auctionSearchWords = this.masterAuctionSearchWords.filter(element => element.searchWord.toLowerCase().includes(this.searchAuctionSearchWord.toLowerCase()));
+      this.auctionSearchWords = this.masterAuctionSearchWords.filter(element => element.word.toLowerCase().includes(this.searchSearchWord.toLowerCase()));
       this.editSearchWord = [];
       for (var i = 0; i < this.auctionSearchWords.length; i++) {
         this.editSearchWord.push(false);

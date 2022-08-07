@@ -1,7 +1,7 @@
 export class AuctionCategorySite {
 
   id: number;
-  auctionSiteId: number;
+  siteId: number;
   siteCategoryId: number;
   siteCategoryName: string;
 

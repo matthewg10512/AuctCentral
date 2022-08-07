@@ -27,9 +27,9 @@ namespace AuctCentral.Controllers
 
 
         [HttpGet]
-        public async Task<IEnumerable<AuctionCategorySiteDto>> GetAuctionCategorySites()
+        public async Task<IEnumerable<CategorySiteDto>> GetAuctionCategorySites()
         {
-            List<AuctionCategorySiteDto> info = new List<AuctionCategorySiteDto>();
+            List<CategorySiteDto> info = new List<CategorySiteDto>();
 
             _authentication.AuthenticationToken(_configuration);
             using (var client = new HttpClient())
@@ -55,7 +55,7 @@ namespace AuctCentral.Controllers
 
                     try
                     {
-                        info = JsonConvert.DeserializeObject<List<AuctionCategorySiteDto>>(responseString);
+                        info = JsonConvert.DeserializeObject<List<CategorySiteDto>>(responseString);
 
                     }
                     catch (Exception ex)

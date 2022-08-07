@@ -6,8 +6,8 @@ export class AuctionItem {
   totalBids: number;
   auctionEndDate: Date;
   itemPrice: number;
-  auctionSiteId: number;
-  auctionSearchWordId: number;
+  siteId: number;
+  searchWordId: number;
   dateCreated: Date;
   dateModified: Date;
   imageUrl: string;

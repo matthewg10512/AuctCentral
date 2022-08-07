@@ -8,8 +8,8 @@ export class AuctionItemsResourceParameters {
   totalBidsMin: number;
   totalBidsMax: number;
   productName: string;
-  auctionSiteId: number;
-  auctionSearchWordId: number;
+  siteId: number;
+  searchWordId: number;
   auctionEndProcessed: boolean;
-  auctionItemId: number[];
+  itemId: number[];
 }

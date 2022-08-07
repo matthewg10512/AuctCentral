@@ -100,14 +100,14 @@ export class AuctionCategorySiteComponent implements OnInit {
   }
 
   SiteOptionChanged(value: string): void {
-    this.auctionSiteCategoryWordNew.auctionCategoryId = 0;
-    this.auctionCategorySitesOptionsFilter = this.auctionCategorySitesOptions.filter(element => element.auctionSiteId == this.auctionCategorySite);
+    this.auctionSiteCategoryWordNew.categoryId = 0;
+    this.auctionCategorySitesOptionsFilter = this.auctionCategorySitesOptions.filter(element => element.siteId == this.auctionCategorySite);
     this.auctionCategorySitesOptionsFilter.sort((a, b) => a.siteCategoryName.localeCompare(b.siteCategoryName));
   }
 
-  GetAuctionSiteName(auctionSiteId: number): string {
+  GetAuctionSiteName(siteId: number): string {
     let siteName: string = '';
-    let index = this.auctionSites.findIndex(x => x.id === auctionSiteId);
+    let index = this.auctionSites.findIndex(x => x.id === siteId);
     if (index > -1) {
       siteName = this.auctionSites[index].siteName;
     }
@@ -138,7 +138,7 @@ export class AuctionCategorySiteComponent implements OnInit {
       this.SiteOptionChanged('');
 
 
-      this.GetAuctionSearchWordsRecords();
+      this.GetSearchWordsRecords();
     });
 
    
@@ -156,19 +156,19 @@ export class AuctionCategorySiteComponent implements OnInit {
 
   GetSiteNameFromCategory(siteCategoryId: number): string {
     let categoryId: number = 0;
-    let index = this.auctionSiteCategoryWords.findIndex(x => x.auctionCategoryId === siteCategoryId);
+    let index = this.auctionSiteCategoryWords.findIndex(x => x.categoryId === siteCategoryId);
     if (index > -1) {
-      categoryId = this.auctionSiteCategoryWords[index].auctionCategoryId;
+      categoryId = this.auctionSiteCategoryWords[index].categoryId;
     }
 
-    let auctionSiteId: number = 0;
+    let siteId: number = 0;
     index = this.masterAuctionCategorySites.findIndex(x => x.id === categoryId);
     if (index > -1) {
-      auctionSiteId = this.masterAuctionCategorySites[index].auctionSiteId;
+      siteId = this.masterAuctionCategorySites[index].siteId;
     }
 
     let siteName: string = '';
-    index = this.auctionSites.findIndex(x => x.id === auctionSiteId);
+    index = this.auctionSites.findIndex(x => x.id === siteId);
     if (index > -1) {
       siteName = this.auctionSites[index].siteName;
     }
@@ -177,13 +177,13 @@ export class AuctionCategorySiteComponent implements OnInit {
     return siteName;
   }
 
-  GetAuctionSearchWords(searchWordId: number): string {
-    let searchWord: string = '';
+  GetSearchWords(searchWordId: number): string {
+    let word: string = '';
     let index = this.auctionSearchWords.findIndex(x => x.id === searchWordId);
     if (index > -1) {
-      searchWord = this.auctionSearchWords[index].searchWord;
+      word = this.auctionSearchWords[index].word;
     }
-    return searchWord;
+    return word;
   }
 
   GetCategoryName(siteCategoryId:number): string {
@@ -195,8 +195,8 @@ export class AuctionCategorySiteComponent implements OnInit {
     return siteCategoryName;
   }
 
-  GetAuctionSearchWordsRecords(): void {
-    this.auctionRepoService.GetAuctionSearchWords().subscribe(auctionSearchWords => {
+  GetSearchWordsRecords(): void {
+    this.auctionRepoService.GetSearchWords().subscribe(auctionSearchWords => {
       this.auctionSearchWords = auctionSearchWords;
 
 
@@ -205,7 +205,7 @@ export class AuctionCategorySiteComponent implements OnInit {
 
       let auctionSearchWordNew: AuctionSearchWord = new AuctionSearchWord();
       auctionSearchWordNew.id = 0;
-      auctionSearchWordNew.searchWord = '';
+      auctionSearchWordNew.word = '';
       this.auctionSearchWordsOptions.push(auctionSearchWordNew);
 
       var auctionCategorySiteLength = auctionSearchWords.length;
@@ -215,7 +215,7 @@ export class AuctionCategorySiteComponent implements OnInit {
       }
       
 
-      this.auctionSearchWordsOptions.sort((a, b) => a.searchWord.localeCompare(b.searchWord));
+      this.auctionSearchWordsOptions.sort((a, b) => a.word.localeCompare(b.word));
 
 
       this.GetAuctionSiteCategoryWords();

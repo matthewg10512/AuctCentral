@@ -28,9 +28,9 @@ namespace AuctCentral.Controllers
 
 
         [HttpGet]
-        public async Task<IEnumerable<AuctionSiteCategoryWordDto>> GetAuctionSiteCategoryWords()
+        public async Task<IEnumerable<SiteCategoryWordDto>> GetAuctionSiteCategoryWords()
         {
-            List<AuctionSiteCategoryWordDto> info = new List<AuctionSiteCategoryWordDto>();
+            List<SiteCategoryWordDto> info = new List<SiteCategoryWordDto>();
 
             _authentication.AuthenticationToken(_configuration);
             using (var client = new HttpClient())
@@ -56,7 +56,7 @@ namespace AuctCentral.Controllers
 
                     try
                     {
-                        info = JsonConvert.DeserializeObject<List<AuctionSiteCategoryWordDto>>(responseString);
+                        info = JsonConvert.DeserializeObject<List<SiteCategoryWordDto>>(responseString);
 
                     }
                     catch (Exception ex)
@@ -74,7 +74,7 @@ namespace AuctCentral.Controllers
 
 
         [HttpPut]
-        public async Task<IActionResult> UpsertAuctionSiteCategoryWords(AuctionSiteCategoryWordDto auctionSiteCategoryWord)
+        public async Task<IActionResult> UpsertAuctionSiteCategoryWords(SiteCategoryWordDto auctionSiteCategoryWord)
         {
             _authentication.AuthenticationToken(_configuration);
             string apiUrl = _configuration.GetValue<string>("APIURL");
@@ -110,7 +110,7 @@ namespace AuctCentral.Controllers
 
             request.AddHeader("Content-Type", "application/json");
             _authentication.SetBearerTokenRest(request, _configuration);
-            request.AddParameter("application/json", "{\"auctionSearchWordId\":" + auctionSiteCategoryWordId.ToString() + "}", ParameterType.RequestBody);
+            request.AddParameter("application/json", "{\"searchWordId\":" + auctionSiteCategoryWordId.ToString() + "}", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
 

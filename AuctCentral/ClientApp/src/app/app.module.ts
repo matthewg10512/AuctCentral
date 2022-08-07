@@ -30,6 +30,8 @@ import { LoadingDataComponent } from './widget/loading-data/loading-data.compone
 
 import { DatePipe } from '@angular/common';
 import { AuctionStatisticsComponent } from './auction-statistics/auction-statistics.component';
+import { AuctionItemResultsComponent } from '../app/widget/auction-item-results/auction-item-results.component';
+import { AuctionStatisticsResultsComponent } from './widget/auction-statistics-results/auction-statistics-results.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { AuctionStatisticsComponent } from './auction-statistics/auction-statist
     AuctionSearchWordsComponent,
     AuctionCategorySiteComponent,
     LoadingDataComponent,
-    AuctionStatisticsComponent
+    AuctionStatisticsComponent,
+    AuctionItemResultsComponent,
+    AuctionStatisticsResultsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

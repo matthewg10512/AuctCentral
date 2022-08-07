@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AuctCentral.ResourceParameters
 {
-    public class AuctionItemsResourceParameters
+    public class ItemsResourceParameters
     {
         public DateTime? AuctionEndDateRangeMin { get; set; }
         public DateTime? AuctionEndDateRangeMax { get; set; }
@@ -17,11 +17,11 @@ namespace AuctCentral.ResourceParameters
 
         public string ProductName { get; set; }
 
-        public int? AuctionSiteId { get; set; }
-        public int? AuctionSearchWordId { get; set; }
+        public int? SiteId { get; set; }
+        public int? SearchWordId { get; set; }
 
         public bool? AuctionEndProcessed { get; set; }
-        public int[] AuctionItemId { get; set; }
+        public int[] ItemId { get; set; }
 
     }
 }

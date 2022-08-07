@@ -28,7 +28,7 @@
                 Auction Sites
               </label>
 
-              <select class="form-control" name="auctionSites" id="auctionSites" #t [(ngModel)]="auctionItemsResourceParameters.auctionSiteId">
+              <select class="form-control" name="auctionSites" id="auctionSites" #t [(ngModel)]="auctionItemsResourceParameters.siteId">
                 <option *ngFor="let option of auctionSites" [value]="option.id">{{option.siteName}}</option>
               </select>
 
@@ -37,8 +37,8 @@
               <label class="form-check-label" for="auctionSearchWords">
                 Search Words
               </label>
-              <select class="form-control" name="auctionSearchWords" id="auctionSearchWords" #t [(ngModel)]="auctionItemsResourceParameters.auctionSearchWordId">
-                <option *ngFor="let option of auctionSearchWords" [value]="option.id">{{option.searchWord}}</option>
+              <select class="form-control" name="auctionSearchWords" id="auctionSearchWords" #t [(ngModel)]="auctionItemsResourceParameters.searchWordId">
+                <option *ngFor="let option of auctionSearchWords" [value]="option.id">{{option.word}}</option>
               </select>
             </div>
 
@@ -135,114 +135,115 @@
           </button>
           <br />
           <br />
-          <div *ngIf="searchRunning">
-            <widget-loading-data></widget-loading-data>
-          </div>
-            <div class="mat-elevation-z8" style="height:750px;overflow-y:auto">
-              <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                             showFirstLastButtons
-                             aria-label="Select page of periodic elements">
-              </mat-paginator>
-              <table mat-table [dataSource]="auctionItemsSource" class="width:100%">
-                <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <app-auction-item-results [events]="eventsSubject.asObservable()" [auctionItemsResourceParameters]="auctionItemsResourceParameters" >  </app-auction-item-results> 
 
-                <ng-container matColumnDef="image">
-                  <th mat-header-cell *matHeaderCellDef>  </th>
-                  <td mat-cell *matCellDef="let element"> <img src="{{element.imageUrl}}" style="width:80px;height:100px;" /> </td>
-                </ng-container>
-                <ng-container matColumnDef="productname">
-                  <th mat-header-cell *matHeaderCellDef> Product Name <i (click)="sortByName()" [ngClass]="!sortNameDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i></th>
-                  <td mat-cell *matCellDef="let element">
-                    <a target="_blank" href="{{element.url}}">
-                      {{ element.productName }}
-                    </a>
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="ends">
-                  <th mat-header-cell *matHeaderCellDef> Ends </th>
-                  <td mat-cell *matCellDef="let element">   {{ element.auctionEndDate | date: 'short' }} </td>
-                </ng-container>
+          <!--
+  <div class="mat-elevation-z8" style="height:750px;overflow-y:auto">
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
+    <table mat-table [dataSource]="auctionItemsSource" class="width:100%">
+      <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-                <ng-container matColumnDef="site">
-                  <th mat-header-cell *matHeaderCellDef> Site </th>
-                  <td mat-cell *matCellDef="let element">  {{ GetAuctionSiteName(element.auctionSiteId)   }} </td>
-                </ng-container>
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element"> <img src="{{element.imageUrl}}" style="width:80px;height:100px;" /> </td>
+      </ng-container>
+      <ng-container matColumnDef="productname">
+        <th mat-header-cell *matHeaderCellDef> Product Name <i (click)="sortByName()" [ngClass]="!sortNameDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i></th>
+        <td mat-cell *matCellDef="let element">
+          <a target="_blank" href="{{element.url}}">
+            {{ element.productName }}
+          </a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="ends">
+        <th mat-header-cell *matHeaderCellDef> Ends </th>
+        <td mat-cell *matCellDef="let element">   {{ element.auctionEndDate | date: 'short' }} </td>
+      </ng-container>
 
-                <ng-container matColumnDef="searchname">
-                  <th mat-header-cell *matHeaderCellDef> Search Name </th>
-                  <td mat-cell *matCellDef="let element">   {{ GetAuctionSearchWord(element.auctionSearchWordId)  }} </td>
-                </ng-container>
+      <ng-container matColumnDef="site">
+        <th mat-header-cell *matHeaderCellDef> Site </th>
+        <td mat-cell *matCellDef="let element">  {{ GetAuctionSiteName(element.siteId)   }} </td>
+      </ng-container>
 
-                <ng-container matColumnDef="totalbids">
-                  <th mat-header-cell *matHeaderCellDef>Bids</th>
-                  <td mat-cell *matCellDef="let element">   {{ element.totalBids }} </td>
-                </ng-container>
+      <ng-container matColumnDef="searchname">
+        <th mat-header-cell *matHeaderCellDef> Search Name </th>
+        <td mat-cell *matCellDef="let element">   {{ GetSearchWord(element.searchWordId)  }} </td>
+      </ng-container>
 
-                <ng-container matColumnDef="price">
-                  <th mat-header-cell *matHeaderCellDef> Price <i (click)="sortByPrice()" [ngClass]="!sortPriceDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i></th>
-                  <td mat-cell *matCellDef="let element">   {{ element.itemPrice | currency }} </td>
-                </ng-container>
+      <ng-container matColumnDef="totalbids">
+        <th mat-header-cell *matHeaderCellDef>Bids</th>
+        <td mat-cell *matCellDef="let element">   {{ element.totalBids }} </td>
+      </ng-container>
 
-
-              </table>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef> Price <i (click)="sortByPrice()" [ngClass]="!sortPriceDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i></th>
+        <td mat-cell *matCellDef="let element">   {{ element.itemPrice | currency }} </td>
+      </ng-container>
 
 
-            </div>
-            <!--
-    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="auctionItems">
-      <thead>
-        <tr>
-          <th width="100px">
-          </th>
-          <th width="300px">
-            Product Name
-
-            <i (click)="sortByName()" [ngClass]="!sortNameDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-          </th>
-          <th width="150">Ends</th>
-          <th width="150">Site</th>
-          <th width="150">Search Name</th>
-          <th width="150px">Total Bids</th>
-          <th width="150px">
-            Item Price
-            <i (click)="sortByPrice()" [ngClass]="!sortPriceDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let auctionItem of auctionItems">
-          <td width="100px">
-
-            <img src="{{auctionItem.imageUrl}}" style="width:80px;height:100px;" />
-          </td>
-          <td width="300px">
-            <a target="_blank" href="{{auctionItem.url}}">
-              {{ auctionItem.productName }}
-            </a>
-          </td>
-          <td width="150px">
-
-            {{ GetAuctionDate(auctionItem.auctionEndDate)}}
-          </td>
-          <td width="150px">
-            {{ GetAuctionSiteName(auctionItem.auctionSiteId)   }}
-          </td>
-          <td width="150px">
-
-            {{ GetAuctionSearchWord(auctionItem.auctionSearchWordId)  }}
-          </td>
-          <td width="150px">
-            {{ auctionItem.totalBids }}
-          </td>
-          <td width="150px">
-            {{ auctionItem.itemPrice | currency }}
-          </td>
-        </tr>
-      </tbody>
     </table>
-      -->
-          </div>
+
+
+  </div>
+  -->
+          <!--
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="auctionItems">
+    <thead>
+      <tr>
+        <th width="100px">
+        </th>
+        <th width="300px">
+          Product Name
+
+          <i (click)="sortByName()" [ngClass]="!sortNameDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+        </th>
+        <th width="150">Ends</th>
+        <th width="150">Site</th>
+        <th width="150">Search Name</th>
+        <th width="150px">Total Bids</th>
+        <th width="150px">
+          Item Price
+          <i (click)="sortByPrice()" [ngClass]="!sortPriceDesc ? 'cil-sort-descending' : 'cil-sort-ascending'"></i>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let auctionItem of auctionItems">
+        <td width="100px">
+
+          <img src="{{auctionItem.imageUrl}}" style="width:80px;height:100px;" />
+        </td>
+        <td width="300px">
+          <a target="_blank" href="{{auctionItem.url}}">
+            {{ auctionItem.productName }}
+          </a>
+        </td>
+        <td width="150px">
+
+          {{ GetAuctionDate(auctionItem.auctionEndDate)}}
+        </td>
+        <td width="150px">
+          {{ GetAuctionSiteName(auctionItem.siteId)   }}
+        </td>
+        <td width="150px">
+
+          {{ GetSearchWord(auctionItem.searchWordId)  }}
+        </td>
+        <td width="150px">
+          {{ auctionItem.totalBids }}
+        </td>
+        <td width="150px">
+          {{ auctionItem.itemPrice | currency }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+    -->
+        </div>
 
         </div>
 

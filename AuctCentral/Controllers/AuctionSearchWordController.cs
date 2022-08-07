@@ -29,9 +29,9 @@ namespace AuctCentral.Controllers
 
 
         [HttpGet]
-        public async Task<IEnumerable<AuctionSearchWordDto>> GetAuctionSearchWords()
+        public async Task<IEnumerable<SearchWordDto>> GetSearchWords()
         {
-            List<AuctionSearchWordDto> info = new List<AuctionSearchWordDto>();
+            List<SearchWordDto> info = new List<SearchWordDto>();
 
             _authentication.AuthenticationToken(_configuration);
             using (var client = new HttpClient())
@@ -57,7 +57,7 @@ namespace AuctCentral.Controllers
 
                     try
                     {
-                        info = JsonConvert.DeserializeObject<List<AuctionSearchWordDto>>(responseString);
+                        info = JsonConvert.DeserializeObject<List<SearchWordDto>>(responseString);
 
                     }
                     catch (Exception ex)
@@ -74,7 +74,7 @@ namespace AuctCentral.Controllers
 
 
         [HttpPut]
-        public async Task<IActionResult> UpsertAuctionSearchWord(AuctionSearchWordDto auctionSearchWord)
+        public async Task<IActionResult> UpsertAuctionSearchWord(SearchWordDto searchWord)
         {
             _authentication.AuthenticationToken(_configuration);
             string apiUrl = _configuration.GetValue<string>("APIURL");
@@ -87,20 +87,20 @@ namespace AuctCentral.Controllers
             _authentication.SetBearerTokenRest(request, _configuration);
             request.AddHeader("Content-Type", "application/json");
            
-            request.AddParameter("application/json; charset=utf-8", JsonConvert.SerializeObject(auctionSearchWord), ParameterType.RequestBody);
+            request.AddParameter("application/json; charset=utf-8", JsonConvert.SerializeObject(searchWord), ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
 
 
             return NoContent();
         }
 
-        [HttpDelete("{auctionSearchWordId}", Name = "DeleteInvestmentProjection")]
-        public async Task<IActionResult> DeleteAuctionSearchWord(int auctionSearchWordId)
+        [HttpDelete("{searchWordId}", Name = "DeleteInvestmentProjection")]
+        public async Task<IActionResult> DeleteAuctionSearchWord(int searchWordId)
         {
             _authentication.AuthenticationToken(_configuration);
 
             string apiUrl = _configuration.GetValue<string>("APIURL");
-            var url = apiUrl + "AuctionSearchWords/" + auctionSearchWordId.ToString();
+            var url = apiUrl + "AuctionSearchWords/" + searchWordId.ToString();
 
 
             var client = new RestClient(url);
@@ -110,7 +110,7 @@ namespace AuctCentral.Controllers
 
             request.AddHeader("Content-Type", "application/json");
             _authentication.SetBearerTokenRest(request, _configuration);
-            request.AddParameter("application/json", "{\"auctionSearchWordId\":" + auctionSearchWordId.ToString() + "}", ParameterType.RequestBody);
+            request.AddParameter("application/json", "{\"searchWordId\":" + searchWordId.ToString() + "}", ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
 

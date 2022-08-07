@@ -62,7 +62,7 @@ namespace AuctCentral.Services.Authentication
                 {
                     details += "url ";
                     string apiUrl = configuration.GetValue<string>("APIURL");
-                    var url = apiUrl + "securities/" + 251;
+                    var url = apiUrl + "auctionsites";
                     details += "urlHit";
                     SetBearerToken(client, configuration);
                     var response = client.GetAsync(url).Result;
@@ -103,7 +103,6 @@ namespace AuctCentral.Services.Authentication
             var clientPost = new RestClient(apiUrl);
             // client.Authenticator = new HttpBasicAuthenticator(username, password);
             var request = new RestRequest("signin");
-           
             //request.AddHeader("Content-Type", "application/json");
             var responseString = clientPost.Post(request);
             var contentString = responseString.Content; // Raw content as string

@@ -2,9 +2,9 @@ import { AuctionItemsResourceParameters } from "../resource-parameters/auction.i
 import { ItemStatDetail } from "./itemstatdetail";
 
 export class AuctionStatisticDetail {
-  auctionSearchWordId: number;
+  searchWordId: number;
   auctionKeyWords: string[];
   itemStatDetail: ItemStatDetail
   auctionItemsResourceParameters: AuctionItemsResourceParameters;
-  auctionItemIds: number[];
+  itemId: number[];
 }

@@ -5,7 +5,7 @@
       <div class="col-md-8">
         <div class="card">
           <div class="card-header ">
-            Current Search Words <input type="text" [(ngModel)]="searchAuctionSearchWord" (ngModelChange)="onKeypressEvent()" />
+            Current Search Words <input type="text" [(ngModel)]="searchSearchWord" (ngModelChange)="onKeypressEvent()" />
             
           </div>
           <div class="card-body" style="height:750px;overflow-y:auto">
@@ -27,9 +27,9 @@
               <tbody>
                 <tr *ngFor="let auctionSearchWord of auctionSearchWords;let i = index">
                   <td width="300px">
-                    {{auctionSearchWord.searchWord}}
+                    {{auctionSearchWord.word}}
                     <span *ngIf="editSearchWord[i]">
-                      <input type="text" *ngIf="editSearchWord[i]" [(ngModel)]="auctionSearchWord.searchWord" />
+                      <input type="text" *ngIf="editSearchWord[i]" [(ngModel)]="auctionSearchWord.word" />
                       <button type="button" class="btn btn-primary" (click)="SaveAuctionSearchWord(i)">Save</button>
                       <button type="button" class="btn btn-danger" (click)="CancelAuctionSearchWordSave(i)">Cancel</button>
                     </span>
